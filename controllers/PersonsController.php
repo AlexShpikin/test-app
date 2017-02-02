@@ -64,9 +64,13 @@ class PersonsController extends Controller
     public function actionCreate()
     {
         $model = new PersonsModel();
-        if (!empty(PersonsModel::find()->all())){
-            $personsList = PersonsModel::find()->all();
+        
+        $persons = PersonsModel::find()->all();
+
+        foreach ($persons as $value) {
+            $personsList[$value->id] = $value->name.' '.$value->patronymic.' '.$value->sername;
         }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -86,13 +90,16 @@ class PersonsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if (!empty(PersonsModel::find()->all())){
 
-            $personsList = PersonsModel::find()
-                ->where('id != '.$id)
-                ->andWhere('boss_id != '.$id.' OR boss_id IS NULL')
-                ->all();
+        $persons = PersonsModel::find()
+            ->where('id != '.$id)
+            ->andWhere('boss_id != '.$id.' OR boss_id IS NULL')
+            ->all();
+            
+        foreach ($persons as $value) {
+            $personsList[$value->id] = $value->name.' '.$value->patronymic.' '.$value->sername;
         }
+                
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

@@ -32,6 +32,7 @@ class PersonsModel extends \yii\db\ActiveRecord
         return [
             [['name', 'sername', 'patronymic'], 'required'],
             [['boss_id'], 'integer'],
+            [['boss_id'], 'default', 'value'=>''],
             [['name', 'sername', 'patronymic'], 'string', 'max' => 255],
         ];
     }
@@ -50,5 +51,14 @@ class PersonsModel extends \yii\db\ActiveRecord
             'patronymic' => 'Отчество',
             'boss_id' => 'Начальник',
         ];
+    }
+
+    public static function getFullName($id)
+    {
+        $boss = self::find()
+                ->where(['id'=>$id])
+                ->one();
+
+        return $boss->name.' '.$boss->patronymic.' '.$boss->sername;
     }
 }

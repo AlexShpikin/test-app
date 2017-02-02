@@ -9,7 +9,9 @@ use app\models\PersonsModel;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Persons Models', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 $boss = PersonsModel::find()->where(['id'=>$model->boss_id])->one();
+
 ?>
 <div class="persons-model-view">
 
@@ -35,9 +37,9 @@ $boss = PersonsModel::find()->where(['id'=>$model->boss_id])->one();
             'patronymic',
             [
                 'attribute'=>'boss_id',
-                'value'=> $boss->name.' '.$boss->patronymic.' '.$boss->sername
+                'value'=> PersonsModel::getFullName($model->boss_id)
             ],
         ],
     ]) ?>
-
+    
 </div>

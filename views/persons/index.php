@@ -33,8 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'boss_id',
                 'label'=>'Начальник',
                 'content'=>function($data){
-                    $boss = PersonsModel::find()->where(['id'=>$data->boss_id])->one();
-                    return $boss->name.' '.$boss->patronymic.' '.$boss->sername;
+                    return PersonsModel::getFullName($data->boss_id);
                 },
             ],
             
