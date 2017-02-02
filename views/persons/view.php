@@ -3,14 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\PersonsModel;
+use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $model app\models\PersonsModel */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Persons Models', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-$boss = PersonsModel::find()->where(['id'=>$model->boss_id])->one();
 
 ?>
 <div class="persons-model-view">
@@ -37,9 +36,9 @@ $boss = PersonsModel::find()->where(['id'=>$model->boss_id])->one();
             'patronymic',
             [
                 'attribute'=>'boss_id',
-                'value'=> PersonsModel::getFullName($model->boss_id)
+                'value'=> $model->getBossName()
             ],
         ],
     ]) ?>
-    
+
 </div>

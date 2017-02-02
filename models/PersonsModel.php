@@ -34,11 +34,15 @@ class PersonsModel extends \yii\db\ActiveRecord
             [['boss_id'], 'integer'],
             [['boss_id'], 'default', 'value'=>''],
             [['name', 'sername', 'patronymic'], 'string', 'max' => 255],
+            [['name', 'sername', 'patronymic'], 'match', 'pattern' => '/^[а-яА-Я-\s]+$/u']
         ];
     }
 
     
-
+    public function getBoss()
+    {
+        return $this->hasOne(self::className(), ['id' => 'boss_id']);
+    }
     /**
      * @inheritdoc
      */
@@ -49,16 +53,33 @@ class PersonsModel extends \yii\db\ActiveRecord
             'name' => 'Имя',
             'sername' => 'Фамилия',
             'patronymic' => 'Отчество',
-            'boss_id' => 'Начальник',
+            'boss_id' => 'Начальник'
         ];
     }
 
-    public static function getFullName($id)
+    public function getFullName()
     {
-        $boss = self::find()
-                ->where(['id'=>$id])
-                ->one();
+        return $this->name.' '.$this->patronymic.' '.$this->sername;
+    }
 
-        return $boss->name.' '.$boss->patronymic.' '.$boss->sername;
+    public function getBossName()
+    {
+        if(isset($this->boss)){
+            return $this->boss->getFullName();
+        }else{
+            return null;
+        }
+    }
+
+    public function getPersons()
+    {
+        $query = self::find();
+
+        if(!$this->getIsNewRecord()){
+            $query
+                ->where('id != '.$this->id)
+                ->andWhere('boss_id != '.$this->id.' OR boss_id IS NULL');
+        }      
+        return $query->all();  
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -18,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sername')->textInput(['maxlength' => true, 'class'=>'form-control text']) ?>
    
-    <?= $form->field($model, 'boss_id')->dropDownList($personsList, ['prompt'=>'']) ?>
+    <?= $form->field($model, 'boss_id')->dropDownList(ArrayHelper::map($model->getPersons(), 'id', 'fullName'), ['prompt'=>'']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

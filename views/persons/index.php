@@ -28,12 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'patronymic',
             'sername',
-
             [
                 'attribute'=>'boss_id',
                 'label'=>'Начальник',
                 'content'=>function($data){
-                    return PersonsModel::getFullName($data->boss_id);
+                    return $data->getBossName();
                 },
             ],
             

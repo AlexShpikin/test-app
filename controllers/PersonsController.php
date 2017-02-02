@@ -8,7 +8,7 @@ use app\models\PersonsSearchModel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\ArrayHelper;
 /**
  * PersonsController implements the CRUD actions for PersonsModel model.
  */
@@ -64,19 +64,12 @@ class PersonsController extends Controller
     public function actionCreate()
     {
         $model = new PersonsModel();
-        
-        $persons = PersonsModel::find()->all();
-
-        foreach ($persons as $value) {
-            $personsList[$value->id] = $value->name.' '.$value->patronymic.' '.$value->sername;
-        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
-                'personsList' => $personsList
+                'model' => $model
             ]);
         }
     }
@@ -90,22 +83,12 @@ class PersonsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        $persons = PersonsModel::find()
-            ->where('id != '.$id)
-            ->andWhere('boss_id != '.$id.' OR boss_id IS NULL')
-            ->all();
-            
-        foreach ($persons as $value) {
-            $personsList[$value->id] = $value->name.' '.$value->patronymic.' '.$value->sername;
-        }
                 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
-                'personsList' => $personsList
+                'model' => $model
             ]);
         }
     }
